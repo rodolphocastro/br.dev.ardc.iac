@@ -14,19 +14,9 @@ resource "azurerm_dns_zone" "ardc-dev-br-dns" {
   tags                = local.platform_tags
 }
 
-// CName that maps from rodolphocastro.github.io to blog.github.ardc.dev.br
+// CName that maps from blog.github.ardc.dev.br to rodolphocastro.github.io
 resource "azurerm_dns_cname_record" "github-blog-ardc-dev-br" {
   name                = "blog.github"
-  zone_name           = azurerm_dns_zone.ardc-dev-br-dns.name
-  resource_group_name = azurerm_resource_group.platform-tools.name
-  ttl                 = 300
-  record              = "rodolphocastro.github.io"
-  tags                = local.platform_tags
-}
-
-// CName that maps from https://github.com/rodolphocastro to profile.github
-resource "azurerm_dns_cname_record" "github-profile-ardc-dev-br" {
-  name                = "profile.github"
   zone_name           = azurerm_dns_zone.ardc-dev-br-dns.name
   resource_group_name = azurerm_resource_group.platform-tools.name
   ttl                 = 300
