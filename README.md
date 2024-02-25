@@ -38,7 +38,11 @@ To use Azure CLI, follow these steps:
 
 Once you have logged in using Azure CLI, you can manage your Azure resources using the command-line interface.
 
-### Local Development
+### Husky
+
+Ensure you have `npm` installed and available locally. Once you clone the repository run `npm install` and the Git Hooks from Husky should automatically be applied to you.
+
+### Developing Locally
 
 Run `terraform init` after you are done logging into Azure to have terraform scaffold the state locally.
 
@@ -46,17 +50,18 @@ Run `terraform init` after you are done logging into Azure to have terraform sca
 2. Use `terraform plan` to dry-run and see what changes would be applied
 3. Finally, if everything looks fine, run `terraform apply` and review the changes before typing `yes` for changes to be applied in Azure.
 
-### Remote Deployment
+## Deploying
 
 You'll need to have the following secrets created in your GitHub repo for an environment named `production` for remote changes to be applied:
 
 * `secrets.AZURE_CLIENT_ID`
+* `secrets.AZURE_CLIENT_SECRET`
 * `secrets.AZURE_TENANT_ID`
 * `secrets.AZURE_SUBSCRIPTION_ID`
 
 Those values may be created by following the tutorials on [connecting to azure with openid connect](https://learn.microsoft.com/en-gb/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#use-the-azure-login-action-with-openid-connect).
 
-This repository uses [Azure CLI login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/azure_cli) instead of the `ARM` service providers for simplicity.
+This repository uses [Azure CLI login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/azure_cli) instead of the `ARM` service providers for simplicity when running locally but uses ARM on the pipeline.
 
 ## GitHub Workflows
 
