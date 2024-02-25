@@ -1,0 +1,12 @@
+{
+  "name": "br.dev.ardc.iac",
+  "version": "1.0.0",
+  "description": "This repository is dedicated to Infrastructure as Code (IaC) using Terraform for managing an Azure Subscription and its resources.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
