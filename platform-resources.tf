@@ -22,4 +22,5 @@ resource "azurerm_dns_cname_record" "github-ardc-dev-br" {
   resource_group_name = azurerm_resource_group.platform-tools.name
   ttl                 = 300
   record              = "rodolphocastro.github.io"
+  tags                = local.platform_tags
 }
