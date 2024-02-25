@@ -6,6 +6,14 @@ terraform {
       version = ">= 3.7.0"
     }
   }
+
+  # terraform state files on Azure, this needs to be created manually in Azure Portal
+  backend "azurerm" {
+    resource_group_name  = "platform-tools"
+    storage_account_name = "ardcterraformstate"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+  }
 }
 
 provider "azurerm" {
