@@ -45,3 +45,29 @@ Run `terraform init` after you are done logging into Azure to have terraform sca
 1. After changing files run `terraform fmt` to format files
 2. Use `terraform plan` to dry-run and see what changes would be applied
 3. Finally, if everything looks fine, run `terraform apply` and review the changes before typing `yes` for changes to be applied in Azure.
+
+### Remote Deployment
+
+You'll need to have the following secrets created in your GitHub repo for an environment named `production` for remote changes to be applied:
+
+* `secrets.AZURE_CLIENT_ID`
+* `secrets.AZURE_TENANT_ID`
+* `secrets.AZURE_SUBSCRIPTION_ID`
+
+Those values may be created by following the tutorials on [connecting to azure with openid connect](https://learn.microsoft.com/en-gb/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#use-the-azure-login-action-with-openid-connect).
+
+This repository uses [Azure CLI login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/azure_cli) instead of the `ARM` service providers for simplicity.
+
+## GitHub Workflows
+
+This project uses GitHub Actions as a continuous integration (CI) system. The configuration for these actions is located in the `.github/workflows` directory. There are two main workflows:
+
+### [validate-pr.yml](.github/workflows/validate-pr.yml)
+
+This workflow is triggered whenever a new pull request is opened or updated. It's responsible for validating the changes proposed in the pull request. This validation can include tasks such as checking the code format, running unit tests, and any other checks that help ensure the quality of the code.
+
+### [deploy-changes.yml](.github/workflows/deploy-changes.yml)
+
+This workflow is triggered when changes are merged into the main branch. It's responsible for deploying the changes to the production environment. The deployment process will typically involve tasks such as building the project, running any necessary migrations, and updating the live application.
+
+These workflows automate the process of validating new code and deploying changes, helping to ensure that the codebase remains stable and that new features and fixes are promptly delivered.
