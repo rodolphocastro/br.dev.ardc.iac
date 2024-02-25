@@ -24,3 +24,17 @@ resource "azurerm_dns_cname_record" "github-ardc-dev-br" {
   record              = "rodolphocastro.github.io"
   tags                = local.platform_tags
 }
+
+// TXT record for ardc.dev.br
+resource "azurerm_dns_txt_record" "ardc-dev-br-entra-txt" {
+  name                = "@"
+  zone_name           = azurerm_dns_zone.ardc-dev-br-dns.name
+  resource_group_name = azurerm_resource_group.platform-tools.name
+  ttl                 = 3600
+
+  record {
+    value = "MS=ms75122764"
+  }
+
+  tags = local.platform_tags
+}
