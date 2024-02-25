@@ -17,7 +17,7 @@ resource "azurerm_dns_zone" "ardc-dev-br-dns" {
 // CName that maps from rodolphocastro.github.io to github.ardc.dev.br
 // TODO: validate after DNS changes on registro.br are live
 resource "azurerm_dns_cname_record" "github-ardc-dev-br" {
-  name                = "github.ardc.dev.br"
+  name                = "blog.github"
   zone_name           = azurerm_dns_zone.ardc-dev-br-dns.name
   resource_group_name = azurerm_resource_group.platform-tools.name
   ttl                 = 300
