@@ -37,3 +37,34 @@ resource "azurerm_dns_txt_record" "ardc-dev-br-entra-txt" {
 
   tags = local.platform_tags
 }
+
+// KeyVault for secrets
+resource "azurerm_key_vault" "terraform-vault" {
+  name                      = "terraformVault${random_string.vaultSpice.result}"
+  enable_rbac_authorization = true
+  location                  = azurerm_resource_group.platform-tools.location
+  resource_group_name       = azurerm_resource_group.platform-tools.name
+  tenant_id                 = data.azurerm_client_config.current.tenant_id
+  sku_name                  = "standard"
+  purge_protection_enabled  = false
+}
+
+// A random string for vault name
+resource "random_string" "vaultSpice" {
+  length  = 8
+  special = false
+  upper   = false
+}
+
+// Declaring an output
+output "keyvault-sample-output" {
+  value     = azurerm_key_vault.terraform-vault.id
+  sensitive = true
+}
+
+// Uploading the output to the Azure Key Vault
+resource "azurerm_key_vault_secret" "terraform-vault-id" {
+  name         = "terraformVaultId"
+  value        = azurerm_key_vault.terraform-vault.id
+  key_vault_id = azurerm_key_vault.terraform-vault.id
+}
