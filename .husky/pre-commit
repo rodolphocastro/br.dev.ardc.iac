@@ -1,2 +1,5 @@
+echo "validating terraform"
 terraform validate
+
+echo "linting terraform files"
 terraform fmt -check -recursive
