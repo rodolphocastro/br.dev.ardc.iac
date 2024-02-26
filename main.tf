@@ -32,3 +32,13 @@ resource "azurerm_resource_group" "platform-tools" {
     environment = "platform"
   }
 }
+
+// Resource group for SWAPI, add resources by changing the ./swapi-resources.tf file
+resource "azurerm_resource_group" "swapi" {
+  name     = "swapi"
+  location = "East US 2"
+  tags = {
+    project     = "swapi"
+    environment = "production"
+  }
+}
