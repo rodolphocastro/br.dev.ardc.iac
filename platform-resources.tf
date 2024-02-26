@@ -47,6 +47,7 @@ resource "azurerm_key_vault" "terraform-vault" {
   tenant_id                 = data.azurerm_client_config.current.tenant_id
   sku_name                  = "standard"
   purge_protection_enabled  = false
+  tags                      = local.platform_tags
 }
 
 // A random string for vault name
