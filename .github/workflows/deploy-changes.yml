@@ -1,4 +1,4 @@
-name: Validate PR
+name: Deploy Changes
 
 on:
   push:
@@ -14,6 +14,8 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions: 
+      contents: write
     environment: production
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -25,6 +27,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'  
         
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
@@ -34,3 +38,9 @@ jobs:
 
       - name: Apply changes
         run: terraform apply -auto-approve
+      
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
+          WITH_V: true
