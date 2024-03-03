@@ -32,3 +32,14 @@ resource "azurerm_resource_group" "platform-tools" {
     environment = "platform"
   }
 }
+
+// terraform import azurerm_resource_group.swapi /subscriptions/76bdb027-5c55-41d3-8ac4-43e2e2717ac6/resourceGroups/swapi
+// Resource group for SWAPI, add resources by changing the ./swapi-resources.tf file
+resource "azurerm_resource_group" "swapi" {
+  name     = "swapi"
+  location = "East US 2"
+  tags = {
+    project     = "swapi"
+    environment = "production"
+  }
+}
