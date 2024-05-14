@@ -7,7 +7,7 @@ locals {
   }
 }
 
-// DNS Zone
+// DNS Zone for ardc.dev.br
 resource "azurerm_dns_zone" "ardc-dev-br-dns" {
   name                = "ardc.dev.br"
   resource_group_name = azurerm_resource_group.platform-tools.name
@@ -36,6 +36,13 @@ resource "azurerm_dns_txt_record" "ardc-dev-br-entra-txt" {
   }
 
   tags = local.platform_tags
+}
+
+// DNS Zone for gravel-alves.com.br
+resource "azurerm_dns_zone" "gravel-alves-com-br-dns" {
+  name                = "gravel-alves.com.br"
+  resource_group_name = azurerm_resource_group.platform-tools.name
+  tags                = local.platform_tags
 }
 
 // KeyVault for secrets
