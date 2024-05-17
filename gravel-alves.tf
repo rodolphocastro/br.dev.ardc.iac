@@ -15,8 +15,8 @@ resource "azurerm_storage_account" "gravel-alves-storage" {
   location                 = azurerm_resource_group.gravel-alves.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
-
-  tags = local.gravel_tags
+  min_tls_version          = "TLS1_2"
+  tags                     = local.gravel_tags
 
   static_website {
     index_document     = "index.html"
