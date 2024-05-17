@@ -8,22 +8,10 @@ locals {
   }
 }
 
-// an azure storage account with static website enabled
-resource "azurerm_storage_account" "gravel-alves-storage" {
-  name                     = "gravelalvesstorage"
-  resource_group_name      = azurerm_resource_group.gravel-alves.name
-  location                 = azurerm_resource_group.gravel-alves.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-  min_tls_version          = "TLS1_2"
-  tags                     = local.gravel_tags
-
-  static_website {
-    index_document     = "index.html"
-    error_404_document = "404.html"
-  }
-
-  identity {
-    type = "SystemAssigned"
-  }
+// an Azure Static Web App for the Gravel-Alves project, in the free tier and East US 2 region
+resource "azurerm_static_web_app" "gravel-alves" {
+  name                = "gravel-alves"
+  resource_group_name = azurerm_resource_group.gravel-alves.name
+  location            = azurerm_resource_group.gravel-alves.location
+  tags                = local.gravel_tags
 }
