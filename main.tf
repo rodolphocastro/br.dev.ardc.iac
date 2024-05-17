@@ -43,3 +43,12 @@ resource "azurerm_resource_group" "swapi" {
     environment = "production"
   }
 }
+// Resource group for Gravel-Alves, add resources by changing the ./gravel-resources.tf file
+resource "azurerm_resource_group" "gravel-alves" {
+  name     = "gravel-alves"
+  location = "East US 2"
+  tags = {
+    project     = "gravel-alves"
+    environment = "production"
+  }
+}
