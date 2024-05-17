@@ -15,10 +15,15 @@ resource "azurerm_storage_account" "gravel-alves-storage" {
   location                 = azurerm_resource_group.gravel-alves.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
-  tags                     = local.gravel_tags
+
+  tags = local.gravel_tags
 
   static_website {
     index_document     = "index.html"
     error_404_document = "404.html"
+  }
+
+  identity {
+    type = "SystemAssigned, UserAssigned"
   }
 }
