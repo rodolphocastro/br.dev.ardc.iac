@@ -24,6 +24,6 @@ resource "azurerm_storage_account" "gravel-alves-storage" {
   }
 
   identity {
-    type = "SystemAssigned, UserAssigned"
+    type = "SystemAssigned"
   }
 }
