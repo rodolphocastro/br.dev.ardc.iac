@@ -45,16 +45,6 @@ resource "azurerm_dns_zone" "gravel-alves-com-br-dns" {
   tags                = local.platform_tags
 }
 
-// CName that maps from gravel-alves.com.br to https://gravelalvesstorage.z20.web.core.windows.net/
-resource "azurerm_dns_cname_record" "gravel-alves-com-br" {
-  name                = "@"
-  zone_name           = azurerm_dns_zone.gravel-alves-com-br-dns.name
-  resource_group_name = azurerm_resource_group.platform-tools.name
-  ttl                 = 300
-  record              = "gravelalvesstorage.z20.web.core.windows.net"
-  tags                = local.platform_tags
-}
-
 // KeyVault for secrets
 resource "azurerm_key_vault" "terraform-vault" {
   name                      = "terraformVault${random_string.vaultSpice.result}"
