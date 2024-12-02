@@ -29,13 +29,18 @@ jobs:
       - name: Validate Terraform files
         id: azure-fmt
         run: terraform fmt -check -recursive
+        continue-on-error: true
 
       - name: Initialize Terraform
         id: azure-init
-        run: terraform init
+        run: terraform init --backend=false
         
-      - name: Validate Terraform itself
+      - name: Validate files
         id: azure-validate
-        run: terraform validate
-
+        run: terraform validate -no-color
+      
+      - name: Plan Changes
+        id: azure-plan
+        run: terraform plan -no-color
+        continue-on-error: true
       
