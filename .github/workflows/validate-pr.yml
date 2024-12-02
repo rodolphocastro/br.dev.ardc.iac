@@ -59,7 +59,8 @@ jobs:
             })
       
             // 2. Prepare format of the comment
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.azure-fmt.outcome }}\`
+            const output = `### Terraform Validation for Azure
+            #### Terraform Format and Style 🖌\`${{ steps.azure-fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.azure-init.outcome }}\`
             #### Terraform Validation 🤖\`${{ steps.azure-validate.outcome }}\`
             <details><summary>Validation Output</summary>
