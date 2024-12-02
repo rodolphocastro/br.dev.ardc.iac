@@ -12,6 +12,9 @@ jobs:
   validate-azure:
     name: Validate Azure Terraform
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./azure
     
     env:
       HUSKY: 0
@@ -22,16 +25,17 @@ jobs:
       
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
-    
+      
+      - name: Validate Terraform files
+        id: azure-fmt
+        run: terraform fmt -check -recursive
+
       - name: Initialize Terraform
-        run: terraform init -backend=false
-        working-directory: ./azure
+        id: azure-init
+        run: terraform init
         
       - name: Validate Terraform itself
+        id: azure-validate
         run: terraform validate
-        working-directory: ./azure
 
-      - name: Validate Terraform files
-        run: terraform fmt -check -recursive
-        working-directory: ./azure
       
