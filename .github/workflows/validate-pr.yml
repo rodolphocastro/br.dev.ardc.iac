@@ -6,7 +6,8 @@ on:
       - main
 
 jobs:
-  validate:
+  validate-azure:
+    name: Validate Azure Terraform
     runs-on: ubuntu-latest
     
     env:
@@ -21,10 +22,13 @@ jobs:
     
       - name: Initialize Terraform
         run: terraform init -backend=false
+        working-directory: ./terraform/azure
         
       - name: Validate Terraform itself
         run: terraform validate
+        working-directory: ./terraform/azure
 
       - name: Validate Terraform files
         run: terraform fmt -check -recursive
+        working-directory: ./terraform/azure
       
