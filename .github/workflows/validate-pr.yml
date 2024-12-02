@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - main
+    paths: 
+      - azure/**
+      - aws/**
 
 jobs:
   validate-azure:
@@ -22,13 +25,13 @@ jobs:
     
       - name: Initialize Terraform
         run: terraform init -backend=false
-        working-directory: ./terraform/azure
+        working-directory: ./azure
         
       - name: Validate Terraform itself
         run: terraform validate
-        working-directory: ./terraform/azure
+        working-directory: ./azure
 
       - name: Validate Terraform files
         run: terraform fmt -check -recursive
-        working-directory: ./terraform/azure
+        working-directory: ./azure
       
