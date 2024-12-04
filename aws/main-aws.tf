@@ -6,6 +6,7 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+
   }
 
   # backend for storing tfstate
@@ -30,4 +31,18 @@ resource "aws_budgets_budget" "aws-budget" {
   time_period_end   = "2087-06-15_00:00"
   time_period_start = "2024-12-01_00:00"
   time_unit         = "MONTHLY"
+}
+
+resource "random_string" "psql-password" {
+  length  = 16
+  special = false
+}
+
+resource "aws_secretsmanager_secret" "psql-password-secret" {
+  name = "psql-password"
+}
+
+resource "aws_secretsmanager_secret_version" "psql-password-value" {
+  secret_id     = aws_secretsmanager_secret.psql-password-secret.id
+  secret_string = random_string.psql-password.result
 }
