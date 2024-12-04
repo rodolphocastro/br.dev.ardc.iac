@@ -6,6 +6,7 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+
   }
 
   # backend for storing tfstate
@@ -30,4 +31,44 @@ resource "aws_budgets_budget" "aws-budget" {
   time_period_end   = "2087-06-15_00:00"
   time_period_start = "2024-12-01_00:00"
   time_unit         = "MONTHLY"
+}
+
+resource "random_string" "psql-password" {
+  length  = 16
+  special = false
+}
+
+resource "aws_secretsmanager_secret" "psql-password-secret" {
+  name        = "psql-password"
+  description = "Password for the PSQL database"
+}
+
+resource "aws_secretsmanager_secret_version" "psql-password-value" {
+  secret_id     = aws_secretsmanager_secret.psql-password-secret.id
+  secret_string = random_string.psql-password.result
+}
+
+resource "aws_db_instance" "ardc-psql" {
+  identifier              = "ardc-psql-instance"
+  engine                  = "postgres"
+  engine_version          = "16.3"
+  instance_class          = "db.t3.micro"
+  username                = "postgres"
+  password                = random_string.psql-password.result
+  publicly_accessible     = true
+  allocated_storage       = 20
+  storage_type            = "gp2"
+  backup_retention_period = 1
+  skip_final_snapshot     = true
+  storage_encrypted       = true
+}
+
+resource "aws_secretsmanager_secret" "psql-connection-string-secret" {
+  name        = "psql-connection-string"
+  description = "Connection string for the PSQL database"
+}
+
+resource "aws_secretsmanager_secret_version" "psql-connection-string-value" {
+  secret_id     = aws_secretsmanager_secret.psql-connection-string-secret.id
+  secret_string = "postgresql://${aws_db_instance.ardc-psql.username}:${random_string.psql-password.result}@${aws_db_instance.ardc-psql.endpoint}/${aws_db_instance.ardc-psql.db_name}"
 }
