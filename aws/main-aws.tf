@@ -1,10 +1,18 @@
 # this folder will use AWS provider
 terraform {
+  # using AWS default provider for terraform
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+  }
+
+  # backend for storing tfstate
+  backend "s3" {
+    bucket = "ardc-tf-bucket"
+    key    = "tf"
+    region = "us-east-2"
   }
 }
 
