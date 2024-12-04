@@ -110,18 +110,19 @@ jobs:
             ## Terraform Validation Results
             ### Terraform Validation for Azure
             #### Terraform Format and Style 🖌\`${{ needs.validate-azure.outputs.azure-fmt }}\`
-            #### Terraform Initialization ⚙️\`${{ needs.validate-azure.outputs.azure-init.outcome }}\`
-            #### Terraform Validation 🤖\`${{ needs.validate-azure.outputs.azure-validate.outcome }}\`
-            <details><summary>AWS Validation Output</summary>
+            #### Terraform Initialization ⚙️\`${{ needs.validate-azure.outputs.azure-init }}\`
+            #### Terraform Validation 🤖\`${{ needs.validate-azure.outputs.azure-validate }}\`
+            <details><summary>Azure Validation Output</summary>
       
             \`\`\`\n
             ${{ needs.validate-azure.outputs.azure-validate-stdout }}
             \`\`\`
-      
+            </details>
+
             ### Terraform Validation for AWS
-            #### Terraform Format and Style 🖌\`${{ needs.validate-aws.outputs.aws-fmt.outcome }}\`
-            #### Terraform Initialization ⚙️\`${{ needs.validate-aws.outputs.aws-init.outcome }}\`
-            #### Terraform Validation 🤖\`${{ needs.validate-aws.outputs.aws-validate.outcome }}\`
+            #### Terraform Format and Style 🖌\`${{ needs.validate-aws.outputs.aws-fmt }}\`
+            #### Terraform Initialization ⚙️\`${{ needs.validate-aws.outputs.aws-init }}\`
+            #### Terraform Validation 🤖\`${{ needs.validate-aws.outputs.aws-validate }}\`
             <details><summary>AWS Validation Output</summary>
       
             \`\`\`\n
