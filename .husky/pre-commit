@@ -7,4 +7,11 @@ terraform validate
 echo "linting terraform files"
 terraform fmt -check -recursive
 
-cd ..
+echo "validating aws resources"
+cd ../aws
+
+echo "validating terraform"
+terraform validate
+
+echo "linting terraform files"
+terraform fmt -check -recursive
