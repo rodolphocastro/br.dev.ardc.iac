@@ -3,8 +3,14 @@ on:
   push:
     branches:
       - main
+    paths: 
+      - azure/**
+      - aws/**
   pull_request:
     types: [opened, synchronize, reopened]
+    paths: 
+        - azure/**
+        - aws/**
 
 jobs:
   sonarcloud:

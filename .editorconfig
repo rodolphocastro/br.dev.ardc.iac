@@ -1,0 +1,27 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+root = true
+
+# YAML files
+[*.yaml,*.yml]
+charset = utf-8
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Markdown files
+[*.md]
+charset = utf-8
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Terraform files
+[*.tf]
+charset = utf-8
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+insert_final_newline = true

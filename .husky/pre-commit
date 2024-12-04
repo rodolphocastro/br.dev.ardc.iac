@@ -1,3 +1,15 @@
+echo "validating azure resources"
+cd azure/
+
+echo "validating terraform"
+terraform validate
+
+echo "linting terraform files"
+terraform fmt -check -recursive
+
+echo "validating aws resources"
+cd ../aws
+
 echo "validating terraform"
 terraform validate
 
