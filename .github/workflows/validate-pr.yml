@@ -89,3 +89,81 @@ jobs:
                 body: output
               })
             }
+
+  validate-aws:
+    name: Validate AWS Terraform
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./aws
+    
+    env:
+      HUSKY: 0
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+      
+      - name: Validate Terraform files
+        id: aws-fmt
+        run: terraform fmt -check -recursive
+        continue-on-error: true
+
+      - name: Initialize Terraform
+        id: aws-init
+        run: terraform init --backend=false
+        
+      - name: Validate files
+        id: aws-validate
+        run: terraform validate -no-color
+
+        # comments on the PR the outputs of this job
+      - uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // 1. Retrieve existing bot comments for the PR
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            })
+            const botComment = comments.find(comment => {
+              return comment.user.type === 'Bot' && comment.body.includes('Terraform Validation for AWS')
+            })
+      
+            // 2. Prepare format of the comment
+            const output = `### Terraform Validation for AWS
+            #### Terraform Format and Style 🖌\`${{ steps.aws-fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.aws-init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.aws-validate.outcome }}\`
+            <details><summary>Validation Output</summary>
+      
+            \`\`\`\n
+            ${{ steps.aws-validate.outputs.stdout }}
+            \`\`\`
+      
+            </details>
+      
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`azure\`, Workflow: \`${{ github.workflow }}\`*`;
+      
+            // 3. If we have a comment, update it, otherwise create a new one
+            if (botComment) {
+              github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: output
+              })
+            } else {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: output
+              })
+            }
