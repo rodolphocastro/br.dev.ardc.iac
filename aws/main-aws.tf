@@ -33,8 +33,8 @@ resource "aws_budgets_budget" "aws-budget" {
   time_unit         = "MONTHLY"
 }
 
-resource "random_string" "psql-password" {
-  length  = 16
+resource "random_password" "psql-password" {
+  length  = 18
   special = false
 }
 
@@ -45,7 +45,7 @@ resource "aws_secretsmanager_secret" "psql-password-secret" {
 
 resource "aws_secretsmanager_secret_version" "psql-password-value" {
   secret_id     = aws_secretsmanager_secret.psql-password-secret.id
-  secret_string = random_string.psql-password.result
+  secret_string = random_password.psql-password.result
 }
 
 resource "aws_db_instance" "ardc-psql" {
@@ -54,7 +54,7 @@ resource "aws_db_instance" "ardc-psql" {
   engine_version          = "16.3"
   instance_class          = "db.t3.micro"
   username                = "postgres"
-  password                = random_string.psql-password.result
+  password                = random_password.psql-password.result
   publicly_accessible     = true
   allocated_storage       = 20
   storage_type            = "gp2"
@@ -70,5 +70,5 @@ resource "aws_secretsmanager_secret" "psql-connection-string-secret" {
 
 resource "aws_secretsmanager_secret_version" "psql-connection-string-value" {
   secret_id     = aws_secretsmanager_secret.psql-connection-string-secret.id
-  secret_string = "postgresql://${aws_db_instance.ardc-psql.username}:${random_string.psql-password.result}@${aws_db_instance.ardc-psql.endpoint}/${aws_db_instance.ardc-psql.db_name}"
+  secret_string = "postgresql://${aws_db_instance.ardc-psql.username}:${random_password.psql-password.result}@${aws_db_instance.ardc-psql.endpoint}/${aws_db_instance.ardc-psql.db_name}"
 }
