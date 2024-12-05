@@ -1,0 +1,40 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Validate All",
+            "detail": "Validates all terraform files",
+            "type": "shell",
+            "command": "./validate-all.sh",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": {
+                "owner": "terraform",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^\\s*(?<file>[^:]+):(?<line>\\d+):\\s*(?<message>.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "message": 3
+                }
+            },
+        },
+        {
+            "label": "Init all",
+            "detail": "initializes all the terraform files",
+            "type": "shell",
+            "command": "./init-all.sh",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

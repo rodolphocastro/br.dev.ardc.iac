@@ -1,17 +1,11 @@
-echo "validating azure resources"
-cd azure/
+echo "initializing all"
 
-echo "validating terraform"
-terraform validate
+./init-all.sh
 
-echo "linting terraform files"
-terraform fmt -check -recursive
+echo "validating all"
 
-echo "validating aws resources"
-cd ../aws
+./validate-all.sh
 
-echo "validating terraform"
-terraform validate
+echo "linting all"
 
-echo "linting terraform files"
-terraform fmt -check -recursive
+./format-all.sh
