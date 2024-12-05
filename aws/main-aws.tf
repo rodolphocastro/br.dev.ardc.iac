@@ -87,3 +87,17 @@ resource "aws_secretsmanager_secret_version" "psql-connection-string-value" {
   secret_id     = aws_secretsmanager_secret.psql-connection-string-secret.id
   secret_string = "postgresql://${aws_db_instance.ardc-psql.username}:${random_password.psql-password.result}@${aws_db_instance.ardc-psql.endpoint}/${aws_db_instance.ardc-psql.db_name}"
 }
+
+# AWS Resource Group for everything created by Terraform
+resource "aws_resourcegroups_group" "platform-rg" {
+  name = "platform-rg"
+  tags = local.tags
+  resource_query {
+    query = jsonencode({
+      ResourceTypeFilters = ["AWS::AllSupported"]
+      TagFilters = {
+        Area = "Platform"
+      }
+    })
+  }
+}
