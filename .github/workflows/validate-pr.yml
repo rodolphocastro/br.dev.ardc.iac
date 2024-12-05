@@ -84,8 +84,32 @@ jobs:
         id: aws-validate
         run: terraform validate -no-color
 
+  plan-changes-aws:
+    name: Plan AWS Terraform Changes
+    needs: validate-aws
+    environment: production
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./aws
+    outputs:
+      aws-plan: ${{ steps.aws-plan.outputs.stdout }}
+    env:
+      HUSKY: 0
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+      
+      - name: Plan changes
+        id: aws-plan
+        run: terraform plan -no-color
+
   post-results:
-    needs: [validate-azure, validate-aws]
+    needs: [validate-azure, validate-aws, plan-changes-aws]
     runs-on: ubuntu-latest
       
     steps:
@@ -125,8 +149,9 @@ jobs:
             #### Terraform Validation 🤖\`${{ needs.validate-aws.outputs.aws-validate }}\`
             <details><summary>AWS Validation Output</summary>
       
+            #### Terraform Plan
             \`\`\`\n
-            ${{ needs.validate-aws.outputs.aws-validate-stdout }}
+            ${{ needs.plan-changes-aws.outputs.aws-plan }}
             \`\`\`
 
             </details>
