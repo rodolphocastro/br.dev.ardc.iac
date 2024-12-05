@@ -93,11 +93,16 @@ resource "aws_resourcegroups_group" "platform-rg" {
   name = "platform-rg"
   tags = local.tags
   resource_query {
-    query = jsonencode({
-      ResourceTypeFilters = ["AWS::AllSupported"]
-      TagFilters = {
-        Area = "Platform"
-      }
-    })
+    query = <<JSON
+  {
+    "ResourceTypeFilters": ["AWS::AllSupported"],
+    "TagFilters": [
+    {
+      "Key": "Area",
+      "Values": ["Platform"]
+    }
+    ]
+  }
+  JSON
   }
 }
