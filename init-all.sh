@@ -1,7 +1,12 @@
 #!/bin/bash
+if [ ! -d "./aws/.terraform" ]; then
+    cd ./aws
+    terraform init -backend=false
+    cd ..
+fi
 
-cd ./aws
-terraform init -backend=false
-
-cd ../azure
-terraform init -backend=false
+if [ ! -d "./azure/.terraform" ]; then
+    cd ./azure
+    terraform init -backend=false
+    cd ..
+fi
