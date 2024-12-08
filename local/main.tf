@@ -22,18 +22,13 @@ provider "docker" {
 # setting some default values for admins and passwords for the local stuff.
 locals {
   default_admin        = "ralves-admin"
-  default_password     = "not-so-secret-yet-local"
+  default_password     = "Not-S0-secret-yet-local"
   default_volumes_path = "${path.cwd}/.volumes"
 }
 
 # testing things out by creating a PostgreSQL and PGAdmin instances
 resource "docker_image" "psql_image" {
   name = "postgres:latest"
-
-}
-
-resource "docker_image" "pgadmin_image" {
-  name = "elestio/pgadmin:latest"
 }
 
 resource "docker_container" "psql_container" {
@@ -52,5 +47,19 @@ resource "docker_container" "psql_container" {
   volumes {
     container_path = "/var/lib/postgresql/data"
     host_path      = "${local.default_volumes_path}/psqldata"
+  }
+}
+
+resource "docker_image" "adminer_image" {
+  name = "adminer:latest"
+}
+
+# HACK: on MacOs, when specifying the db server in the web ui use host.docker.internal:<psql-port>
+resource "docker_container" "adminer_web_ui" {
+  name  = "adminer"
+  image = docker_image.adminer_image.name
+  ports {
+    internal = 8080
+    external = 8085
   }
 }
