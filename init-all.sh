@@ -10,3 +10,9 @@ if [ ! -d "./azure/.terraform" ]; then
     terraform init -backend=false
     cd ..
 fi
+
+if [ ! -d "./local/.terraform" ]; then
+    cd ./local
+    terraform init -backend=false
+    cd ..
+fi
