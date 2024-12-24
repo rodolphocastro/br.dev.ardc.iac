@@ -6,7 +6,6 @@ on:
     paths: 
       - azure/**
       - aws/**
-      - local/**
   pull_request:
     types: [opened, synchronize, reopened]
     paths: 
