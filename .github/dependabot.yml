@@ -4,6 +4,10 @@ updates:
     directory: "azure/"
     schedule:
       interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "aws/"
+    schedule:
+      interval: "daily"
   - package-ecosystem: "github-actions"
     directory: "/.github/workflows"
     schedule:

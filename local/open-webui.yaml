@@ -1,0 +1,10 @@
+version: '3'
+services:
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main # this image assumes you'll be running ollama locally
+    ports:
+      - "3000:8080"
+    volumes:
+      - ./.volumes/openwebui:/app/backend/data
+    environment:
+      - WEBUI_AUTH=false #makes Open-WebUi single user
